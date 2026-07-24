@@ -74,10 +74,10 @@ params:
       - name: Tags
         url: tags
 
-  homeInfoParams:
-    Title: "Qyz's Blog"
-    Content: |
-      Welcome!
+  #homeInfoParams:
+  #  Title: "Qyz's Blog"
+  #  Content: |
+  #    Welcome!
 
   socialIcons:
 
