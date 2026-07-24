@@ -5,3 +5,6 @@ draft: false
 tags: []
 ---
 
+```cpp
+#include<bits/stdc++.h>
+```
