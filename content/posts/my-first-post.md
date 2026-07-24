@@ -9,4 +9,4 @@ tags: []
 
 111
 
-![](/images/photo_2026-03-15_00-21-24.jpg)
+![](/static/images/photo_2026-03-15_00-21-24.jpg)
