@@ -1,25 +1,18 @@
-# If your site is in 'https', then make sure your base url isn't written using 'http' otherwise your sitemap would
-# contain http (as opposed to https) URLs. This would affect Google indexing of your URLs.
+# 站点基础信息
 baseURL: "https://blog.qyzzyqlqj.dpdns.org/"
 title: Qyz's Blog
-copyright: ""
 theme: [hugo-PaperMod]
 
+# Hugo 构建与功能开关
 enableInlineShortcodes: true
 enableRobotsTXT: true
-buildDrafts: false
-buildFuture: false
-buildExpired: false
 enableEmoji: true
-pygmentsUseClasses: true
 mainsections: ["posts", "papermod"]
 
 minify:
   disableXML: true
-  # minifyOutput: true
 
 pagination:
-  disableAliases: false
   pagerSize: 3
 
 # 1. 语言与主菜单配置
@@ -43,13 +36,12 @@ languages:
           url: tags/
           weight: 4
 
-# 2. 核心主题参数配置
+# 2. PaperMod 主题参数
 params:
   env: production
   defaultTheme: auto
-  # disableThemeToggle: true
   ShowShareButtons: false       # 隐藏分享图标
-  hideFooter: true              # 隐藏页脚 Powered by 信息
+  hideFooter: true              # 隐藏页脚信息
   ShowReadingTime: true
   disableSpecial1stPost: true
   displayFullLangName: true
@@ -60,32 +52,13 @@ params:
   ShowAllPagesInArchive: true
   ShowPageNums: true
   ShowToc: true
-  # comments: false
   images: ["images/papermod-cover.png"]
-  math: true
-
-  profileMode:
-    enabled: false
-    title: PaperMod
-    imageUrl: "#"
-    imageTitle: my image
-    buttons:
-      - name: Archives
-        url: archives
-      - name: Tags
-        url: tags
-
-  socialIcons:
-
-  editPost:
-    URL: "https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite/content"
-    Text: "Suggest Changes"
-    appendFilePath: true
+  math: true                    # 开启数学公式
 
   assets:
     disableHLJS: true
 
-# 3. Markdown 渲染引擎配置（已开启公式支持）
+# 3. Markdown 与渲染配置
 markup:
   goldmark:
     renderer:
@@ -102,9 +75,3 @@ markup:
             - ['\\[', '\\]']
   highlight:
     noClasses: false
-
-services:
-  instagram:
-    disableInlineCSS: true
-  x:
-    disableInlineCSS: true
