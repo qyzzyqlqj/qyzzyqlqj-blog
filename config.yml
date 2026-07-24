@@ -22,7 +22,7 @@ pagination:
   disableAliases: false
   pagerSize: 3
 
-# 1. 语言与主菜单配置（仅保留英文，移除 fr/fa 及 Docs 菜单）
+# 1. 语言与主菜单配置
 languages:
   en:
     languageName: "English"
@@ -43,13 +43,13 @@ languages:
           url: tags/
           weight: 4
 
-# 2. 核心主题参数配置（注意 params: 节点及缩进）
+# 2. 核心主题参数配置
 params:
   env: production
   defaultTheme: auto
   # disableThemeToggle: true
   ShowShareButtons: false       # 隐藏分享图标
-  hideFooter: true             # 隐藏页脚 Powered by 信息
+  hideFooter: true              # 隐藏页脚 Powered by 信息
   ShowReadingTime: true
   disableSpecial1stPost: true
   displayFullLangName: true
@@ -75,11 +75,6 @@ params:
       - name: Tags
         url: tags
 
-  #homeInfoParams:
-  #  Title: "Qyz's Blog"
-  #  Content: |
-  #    Welcome!
-
   socialIcons:
 
   editPost:
@@ -90,10 +85,21 @@ params:
   assets:
     disableHLJS: true
 
+# 3. Markdown 渲染引擎配置（已开启公式支持）
 markup:
   goldmark:
     renderer:
       unsafe: true
+    extensions:
+      passthrough:
+        enable: true
+        patterns:
+          inline:
+            - ['$', '$']
+            - ['\\(', '\\)']
+          block:
+            - ['$$', '$$']
+            - ['\\[', '\\]']
   highlight:
     noClasses: false
 
