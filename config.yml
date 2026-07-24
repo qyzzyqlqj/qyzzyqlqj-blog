@@ -62,6 +62,7 @@ params:
   ShowToc: true
   # comments: false
   images: ["images/papermod-cover.png"]
+  math: true
 
   profileMode:
     enabled: false
