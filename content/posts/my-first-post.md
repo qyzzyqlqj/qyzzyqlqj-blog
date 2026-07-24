@@ -9,4 +9,6 @@ tags: []
 
 111
 
-![](/static/images/photo_2026-03-15_00-21-24.jpg)
+
+
+![](/images/photo_2025-11-07_22-37-08.jpg)
