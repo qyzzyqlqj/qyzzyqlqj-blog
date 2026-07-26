@@ -1,5 +1,5 @@
 ---
 title: "Search"
-placeholder: 搜索文章标题或内容来索引...
+placeholder: Search article titles or content to index...
 layout: "search"
 ---
