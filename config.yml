@@ -9,6 +9,13 @@ enableRobotsTXT: true
 enableEmoji: true
 mainsections: ["posts", "papermod"]
 
+# 输出配置：必须包含 JSON，用于 PaperMod 生成搜索索引 (index.json)
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
 minify:
   disableXML: true
 
