@@ -9,14 +9,14 @@
     line-height: 1.4 !important;
 }
 
-/* 2. 容器整体加圆角与背景 */
+/* 2. 容器整体加圆角与背景 (优化：增加 padding-top 为代码留出空间) */
 .post-content .highlight {
     position: relative !important;
     background-color: #2b2b2b !important; /* JetBrains 经典深色背景 */
     border-radius: 8px !important;
     border: 1px solid #3c3f41 !important;
     margin: 1em 0 !important;
-    padding: 28px 0 8px 0 !important; /* 关键：顶部预留 28px 专门给【语言标识】和【Copy按钮】 */
+    padding: 36px 0 8px 0 !important; /* 关键：增加顶部内边距为 36px，让下方代码下移 */
     overflow: hidden !important;
 }
 
@@ -47,41 +47,45 @@
     padding-right: 12px !important;
 }
 
-/* 5. 左上角显示代码语言 (如 CPP, BASH) */
-.post-content .highlight::before {
+/* 5. 左上角显示代码语言 (高亮修正：应用代码块背景色，并整体上移) */
+.post-content .highlight[data-lang]::before {
     content: attr(data-lang);
     position: absolute !important;
-    top: 6px !important;
+    top: 6px !important;           /* 保持在顶部 */
     left: 12px !important;
     font-size: 11px !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
-    color: #a9b7c6 !important; /* JetBrains 字体风格高亮灰 */
-    opacity: 0.8 !important;
+    color: #a9b7c6 !important;
+    background: #2b2b2b !important; /* 应用代码块高亮背景色 */
+    padding: 2px 6px !important;   /* 增加内边距使其更醒目 */
+    border-radius: 4px !important;  /* 增加圆角 */
     pointer-events: none !important;
     z-index: 5 !important;
-    line-height: 1 !important;
+    line-height: 1.2 !important;
+    transform: translateY(-2px);   /* 整体上移微调，距离代码更远 */
 }
 
-/* 6. 右上角 Copy 按钮精准定位 */
+/* 6. 右上角 Copy 按钮精准定位 (高亮修正：应用代码块背景色，并整体上移) */
 .post-content .highlight .copy-code {
     position: absolute !important;
-    top: 6px !important;
+    top: 6px !important;           /* 保持在顶部 */
     right: 10px !important;
     margin: 0 !important;
-    padding: 3px 8px !important;
+    padding: 4px 10px !important; /* 增加内边距使其更易点击 */
     font-size: 11px !important;
     color: #a9b7c6 !important;
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: #2b2b2b !important; /* 应用代码块高亮背景色 */
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 4px !important;
-    line-height: 1 !important;
+    line-height: 1.2 !important;
     z-index: 5 !important;
     cursor: pointer;
+    transform: translateY(-2px);   /* 整体上移微调，距离代码更远 */
 }
 
 .post-content .highlight .copy-code:hover {
-    background: rgba(255, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.1) !important; /* 鼠标悬停时轻微变化 */
 }
 
 /* 7. 行内代码（`code`）样式 */
