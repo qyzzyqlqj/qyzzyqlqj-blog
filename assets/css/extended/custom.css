@@ -1,63 +1,24 @@
-/* Custom styles added to demo */
+/* ==================== 语言标识与 Copy 按钮微调 ==================== */
 
-iframe {
-    border-radius: var(--radius) !important;
-}
-
-.entry-cover img {
-    border: 1px solid var(--border);
-}
-
-/* 1. 统一代码字体与排版 */
-.post-content code,
-.post-content pre {
-    font-family: "JetBrains Mono", Consolas, "Fira Code", Monaco, "Courier New", Courier, monospace !important;
-    font-style: normal !important; /* 强制取消斜体 */
-    font-size: 14px !important;    /* 字号 */
-    line-height: 1.4 !important;   /* 行高缩紧 */
-}
-
-/* 2. 容器整体加圆角与背景 */
-.post-content .highlight {
-    position: relative !important;
-    background-color: #2b2b2b !important; /* JetBrains 经典深色背景 */
-    border-radius: 8px !important;
-    border: 1px solid #3c3f41 !important;
-    margin: 1em 0 !important;
-    padding: 0 !important; /* 彻底清除外层容器 padding */
-}
-
-/* 3. 消除内部 pre 与 td 的所有多余留白 */
-.post-content pre {
-    background-color: transparent !important;
-    border: none !important;
-    border-radius: 0 !important;
-    margin: 0 !important;
-    padding: 8px 0 !important; /* 上下内边距收紧至 8px */
-}
-
-.post-content .highlight td {
-    padding: 0 !important;
-    vertical-align: top !important;
-}
-
-/* 4. 调整行号的颜色、右侧间距与防选中 */
-.post-content .lntd:first-child pre code span,
-.post-content .ln {
-    color: #606366 !important;     /* Darcula 风格行号灰 */
-    padding-left: 10px !important;
-    padding-right: 3px !important;  /* 行号与代码的间距 */
-    user-select: none !important;   /* 禁止鼠标选中行号 */
-}
-
-.post-content .lntd:last-child pre {
-    padding-right: 40px !important; /* 给右侧 copy 按钮预留空间 */
-}
-
-/* 5. 重新定位 Copy 按钮（防止撑高顶部留白） */
-.post-content .highlight .copy-code {
+/* 1. 左上角显示语言名称 */
+.post-content .highlight[data-lang]::before {
+    content: attr(data-lang);
     position: absolute !important;
     top: 6px !important;
+    left: 12px !important;        /* 移到左上角 */
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    color: #808080 !important;    /* 匹配 JetBrains 风格的灰色文本 */
+    opacity: 0.7 !important;
+    pointer-events: none !important;
+    z-index: 2 !important;
+}
+
+/* 2. 上移右侧 Copy 按钮 */
+.post-content .highlight .copy-code {
+    position: absolute !important;
+    top: 4px !important;           /* 从 6px 上移到 4px */
     right: 8px !important;
     margin: 0 !important;
     padding: 2px 6px !important;
@@ -65,12 +26,10 @@ iframe {
     background: rgba(255, 255, 255, 0.08) !important;
     border-radius: 4px !important;
     line-height: 1 !important;
+    z-index: 2 !important;
 }
 
-/* 6. 行内代码（`code`）样式 */
-.post-content p code,
-.post-content li code {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    padding: 2px 6px !important;
-    border-radius: 4px !important;
+/* 3. 如果开启了行号或第一行代码太靠上，为左上角语言标识留出一点内边距 (可选) */
+.post-content .highlight[data-lang] pre {
+    padding-top: 10px !important;  /* 稍微增加顶部边距，防止第一行代码与标签视觉挤压 */
 }
