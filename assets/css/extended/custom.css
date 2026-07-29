@@ -194,8 +194,8 @@ iframe {
 .codeblock-wrapper .ln,
 .codeblock-wrapper .lnlinks {
     color: #606366 !important;
-    padding-left: 12px !important;
-    padding-right: 4px !important; /* 修正：缩小行号右侧内边距 */
+    padding-left: 6px !important;
+    padding-right: 0px !important; /* 修正：缩小行号右侧内边距 */
     user-select: none !important;
     -webkit-user-select: none !important;
 }
