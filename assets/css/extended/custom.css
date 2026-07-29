@@ -1,45 +1,44 @@
-/* ==================== 完整修正后的代码块样式 ==================== */
+/* ==================== 彻底修复版：VS Code 风格代码框 ==================== */
 
-/* 1. 统一代码字体与排版 */
+/* 1. 字体与基本排版 */
 .post-content code,
 .post-content pre {
-    font-family: "JetBrains Mono", Consolas, "Fira Code", Monaco, "Courier New", Courier, monospace !important;
+    font-family: "JetBrains Mono", Consolas, "Fira Code", Monaco, monospace !important;
     font-style: normal !important;
     font-size: 14px !important;
     line-height: 1.4 !important;
 }
 
-/* 2. 容器整体加圆角与背景 */
+/* 2. 外层唯一容器（解决双层边框与拉爆问题） */
 .post-content .highlight {
     position: relative !important;
-    background-color: #2b2b2b !important; /* JetBrains 经典深色背景 */
+    background-color: #1e1e1e !important; /* VS Code 经典深色背景 */
+    border: 1px solid #3c3c3c !important;
     border-radius: 8px !important;
-    border: 1px solid #3c3f41 !important;
-    margin: 1em 0 !important;
-    padding: 28px 0 8px 0 !important; /* 关键：顶部预留 28px 专门给【语言标识】和【Copy按钮】 */
+    margin: 1.2em 0 !important;
+    padding: 30px 0 10px 0 !important;   /* 顶部固定预留 30px 给标签和按钮 */
     overflow: hidden !important;
 }
 
-/* 3. 内部 pre 与 td 清除多余内边距，让代码顶格对齐 */
-.post-content pre {
-    background-color: transparent !important;
+/* 3. 彻底清空内部所有元素的背景、边框与边距，消除内层方框 */
+.post-content .highlight .chroma,
+.post-content .highlight pre,
+.post-content .highlight table,
+.post-content .highlight td {
+    background: transparent !important;
     border: none !important;
     border-radius: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
+    box-shadow: none !important;
 }
 
-.post-content .highlight td {
-    padding: 0 !important;
-    vertical-align: top !important;
-}
-
-/* 4. 行号样式优化 */
+/* 4. 行号区域细节调整 */
 .post-content .lntd:first-child pre code span,
 .post-content .ln {
-    color: #606366 !important;
+    color: #858585 !important;           /* VS Code 风格行号灰 */
     padding-left: 12px !important;
-    padding-right: 8px !important;
+    padding-right: 10px !important;
     user-select: none !important;
 }
 
@@ -47,32 +46,31 @@
     padding-right: 12px !important;
 }
 
-/* 5. 左上角显示代码语言 (如 CPP, BASH) */
-.post-content .highlight::before {
+/* 5. 左上角代码语言标识（VS Code 经典蓝色高亮） */
+.post-content .highlight[data-lang]::before {
     content: attr(data-lang);
     position: absolute !important;
-    top: 6px !important;
-    left: 12px !important;
-    font-size: 11px !important;
+    top: 7px !important;                 /* 精准顶部对齐 */
+    left: 14px !important;
+    font-size: 12px !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
-    color: #a9b7c6 !important; /* JetBrains 字体风格高亮灰 */
-    opacity: 0.8 !important;
+    color: #569cd6 !important;           /* VS Code 经典关键字/类型蓝 */
+    line-height: 1 !important;
     pointer-events: none !important;
     z-index: 5 !important;
-    line-height: 1 !important;
 }
 
-/* 6. 右上角 Copy 按钮精准定位 */
+/* 6. 右上角 Copy 按钮（微调对齐与 VS Code 暗色风格） */
 .post-content .highlight .copy-code {
     position: absolute !important;
-    top: 6px !important;
+    top: 5px !important;                 /* 与左侧语言标签平行 */
     right: 10px !important;
     margin: 0 !important;
     padding: 3px 8px !important;
     font-size: 11px !important;
-    color: #a9b7c6 !important;
-    background: rgba(255, 255, 255, 0.08) !important;
+    color: #cccccc !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 4px !important;
     line-height: 1 !important;
@@ -81,13 +79,15 @@
 }
 
 .post-content .highlight .copy-code:hover {
-    background: rgba(255, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
 }
 
-/* 7. 行内代码（`code`）样式 */
+/* 7. 行内代码（`code`）保持轻量 */
 .post-content p code,
 .post-content li code {
     background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ce9178 !important;           /* VS Code 字符串橘色或淡亮色 */
     padding: 2px 6px !important;
     border-radius: 4px !important;
 }
