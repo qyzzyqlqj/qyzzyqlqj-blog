@@ -8,43 +8,114 @@ iframe {
     border: 1px solid var(--border);
 }
 
-/* 1. 统一代码字体与排版（使用 JetBrains 常用等宽字体，强制取消斜体） */
+/* 1. 基础字体与代码设置 */
 .post-content code,
 .post-content pre {
     font-family: "JetBrains Mono", Consolas, "Fira Code", Monaco, "Courier New", Courier, monospace !important;
-    font-style: normal !important; /* 强制取消斜体 */
-    font-size: 14px !important;    /* 字号 */
-    line-height: 1.6 !important;   /* 行高 */
+    font-style: normal !important;
+    font-size: 13.5px !important;
+    line-height: 1.6 !important;
 }
 
-/* 2. 容器整体加圆角与背景（匹配 JetBrains Darcula 经典背景色 #2b2b2b） */
-.post-content .highlight,
+/* 2. 代码块主容器（外框） */
+.post-content .highlight {
+    position: relative !important;
+    background-color: #2b2b2b !important;
+    border-radius: 8px !important;
+    border: 1px solid #3c3f41 !important;
+    margin: 1.5em 0 !important;
+    overflow: hidden !important; /* 隐藏超出的边角 */
+}
+
+/* 3. 分区一：顶部表头（展示代码语言 & 放置复制按钮） */
+.post-content .highlight::before {
+    content: attr(data-lang); /* 自动获取代码语言 */
+    display: flex !important;
+    align-items: center !important;
+    height: 34px !important;
+    padding: 0 14px !important;
+    background-color: #323232 !important; /* 柔和浅色表头 */
+    color: #a9b7c6 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important; /* 语言名大写 */
+    border-bottom: 1px solid #3c3f41 !important;
+}
+
+/* 调整 PaperMod 自带复制按钮的位置，使其完美嵌入表头右侧 */
+.post-content .highlight .copy-code {
+    position: absolute !important;
+    top: 3px !important;
+    right: 8px !important;
+    background: transparent !important;
+    color: #a9b7c6 !important;
+    border: none !important;
+    font-size: 12px !important;
+    z-index: 10 !important;
+}
+
+/* 4. 重置 pre 容器边距 */
 .post-content pre {
-    background-color: #2b2b2b !important; /* JetBrains 经典深色背景 */
-    border-radius: 8px !important;         /* 圆角 */
-    border: 1px solid #3c3f41 !important;  /* JetBrains 风格灰边框 */
-}
-
-/* 消除带行号时内部两列 pre 的独立背景与重复边框 */
-.post-content .highlight pre {
     background-color: transparent !important;
     border: none !important;
     border-radius: 0 !important;
-    padding: 12px 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-/* 3. 调整行号的颜色、右侧间距与防选中 */
+/* 不带行号时的代码块内边距 */
+.post-content pre:not(.has-ln) {
+    padding: 12px 14px !important;
+}
+
+/* 5. 分区二与三：行号区与代码区的双列渲染 */
+.post-content .highlight table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+.post-content .highlight td {
+    padding: 0 !important;
+    vertical-align: top !important;
+}
+
+/* 左侧：行号区（暗色背景分区 + 浅灰色竖分割线） */
+.post-content .lntd:first-child {
+    background-color: #262626 !important; /* 比主背景稍暗一点点，形成极微小色差 */
+    border-right: 1px solid #383838 !important; /* 浅灰色垂直分割线 */
+    width: 1% !important; /* 紧贴宽度 */
+}
+
+.post-content .lntd:first-child pre {
+    padding: 10px 0 !important;
+}
+
 .post-content .lntd:first-child pre code span,
 .post-content .ln {
-    color: #606366 !important;     /* Darcula 风格行号灰 */
-    padding-right: 14px !important; /* 行号与代码的间距 */
-    user-select: none !important;   /* 禁止鼠标选中行号 */
+    display: block !important;
+    color: #606366 !important;
+    padding-left: 10px !important;
+    padding-right: 6px !important; /* 行号到分割线的间距缩小为原来的一半 */
+    text-align: right !important;
+    user-select: none !important; /* 防止选中行号 */
 }
 
-/* 4. 行内代码（`code`）样式 */
+/* 右侧：代码区 */
+.post-content .lntd:last-child {
+    background-color: #2b2b2b !important; /* 核心代码区背景 */
+}
+
+.post-content .lntd:last-child pre {
+    padding: 10px 12px !important; /* 代码到分割线的间距 */
+    overflow-x: auto !important;
+}
+
+/* 6. 行内代码（`code`）样式保持 */
 .post-content p code,
 .post-content li code {
     background-color: rgba(255, 255, 255, 0.1) !important;
     padding: 2px 6px !important;
     border-radius: 4px !important;
+    font-size: 13.5px !important;
 }
