@@ -1,54 +1,50 @@
 /* Custom styles added to demo */
 
 iframe {
-    border-radius: var(--radius) !important;
+    border-radius: var(--radius) !important;
 }
 
 .entry-cover img {
-    border: 1px solid var(--border);
+    border: 1px solid var(--border);
 }
 
 /* 1. 统一代码字体与排版（使用 JetBrains 常用等宽字体，强制取消斜体） */
 .post-content code,
 .post-content pre {
-    font-family: "JetBrains Mono", Consolas, "Fira Code", Monaco, "Courier New", Courier, monospace !important;
-    font-style: normal !important; /* 强制取消斜体 */
-    font-size: 14px !important;    /* 字号 */
-    line-height: 1.5 !important;   /* 微调行高使排版更紧凑 */
+    font-family: "JetBrains Mono", Consolas, "Fira Code", Monaco, "Courier New", Courier, monospace !important;
+    font-style: normal !important; /* 强制取消斜体 */
+    font-size: 14px !important;    /* 字号 */
+    line-height: 1.6 !important;   /* 行高 */
 }
 
 /* 2. 容器整体加圆角与背景（匹配 JetBrains Darcula 经典背景色 #2b2b2b） */
 .post-content .highlight,
 .post-content pre {
-    background-color: #2b2b2b !important; /* JetBrains 经典深色背景 */
-    border-radius: 8px !important;         /* 圆角 */
-    border: 1px solid #3c3f41 !important;  /* JetBrains 风格灰边框 */
-    margin: 1em 0 !important;              /* 代码块外边距收紧 */
+    background-color: #2b2b2b !important; /* JetBrains 经典深色背景 */
+    border-radius: 8px !important;         /* 圆角 */
+    border: 1px solid #3c3f41 !important;  /* JetBrains 风格灰边框 */
 }
 
-/* 消除带行号时内部 pre 的独立背景，并压缩上下间距 */
+/* 消除带行号时内部两列 pre 的独立背景与重复边框 */
 .post-content .highlight pre {
-    background-color: transparent !important;
-    border: none !important;
-    border-radius: 0 !important;
-    padding-top: 6px !important;    /* 缩小顶部内边距（原 12px） */
-    padding-bottom: 6px !important; /* 缩小底部内边距（原 12px） */
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 5px 0 !important;
 }
 
 /* 3. 调整行号的颜色、右侧间距与防选中 */
 .post-content .lntd:first-child pre code span,
 .post-content .ln {
-    color: #606366 !important;     /* Darcula 风格行号灰 */
-    padding-right: 3px !important; /* 行号与代码的间距 */
-    user-select: none !important;   /* 禁止鼠标选中行号 */
+    color: #606366 !important;     /* Darcula 风格行号灰 */
+    padding-right: 3px !important; /* 行号与代码的间距 */
+    user-select: none !important;   /* 禁止鼠标选中行号 */
 }
 
 /* 4. 行内代码（`code`）样式 */
 .post-content p code,
 .post-content li code {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    padding: 2px 6px !important;
-    border-radius: 4px !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
 }
