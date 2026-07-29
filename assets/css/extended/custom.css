@@ -37,7 +37,7 @@ iframe {
 .post-content .lntd:first-child pre code span,
 .post-content .ln {
     color: #606366 !important;     /* Darcula 风格行号灰 */
-    padding-right: 7px !important; /* 行号与代码的间距 */
+    padding-right: 3px !important; /* 行号与代码的间距 */
     user-select: none !important;   /* 禁止鼠标选中行号 */
 }
 
