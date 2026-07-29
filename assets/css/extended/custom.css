@@ -1,181 +1,93 @@
-/* Custom styles added to demo */
-
-
-
-iframe {
-
-    border-radius: var(--radius) !important;
-
-}
-
-
-
-.entry-cover img {
-
-    border: 1px solid var(--border);
-
-}
-
-
+/* ==================== 完整修正后的代码块样式 ==================== */
 
 /* 1. 统一代码字体与排版 */
-
 .post-content code,
-
 .post-content pre {
-
     font-family: "JetBrains Mono", Consolas, "Fira Code", Monaco, "Courier New", Courier, monospace !important;
-
-    font-style: normal !important; /* 强制取消斜体 */
-
-    font-size: 14px !important;    /* 字号 */
-
-    line-height: 1.4 !important;   /* 行高缩紧 */
-
+    font-style: normal !important;
+    font-size: 14px !important;
+    line-height: 1.4 !important;
 }
-
-
 
 /* 2. 容器整体加圆角与背景 */
-
 .post-content .highlight {
-
     position: relative !important;
-
     background-color: #2b2b2b !important; /* JetBrains 经典深色背景 */
-
     border-radius: 8px !important;
-
     border: 1px solid #3c3f41 !important;
-
     margin: 1em 0 !important;
-
-    padding: 0 !important; /* 彻底清除外层容器 padding */
-
+    padding: 28px 0 8px 0 !important; /* 关键：顶部预留 28px 专门给【语言标识】和【Copy按钮】 */
+    overflow: hidden !important;
 }
 
-
-
-/* 3. 消除内部 pre 与 td 的所有多余留白 */
-
+/* 3. 内部 pre 与 td 清除多余内边距，让代码顶格对齐 */
 .post-content pre {
-
     background-color: transparent !important;
-
     border: none !important;
-
     border-radius: 0 !important;
-
     margin: 0 !important;
-
-    padding: 8px 0 !important; /* 上下内边距收紧至 8px */
-
+    padding: 0 !important;
 }
-
-
 
 .post-content .highlight td {
-
     padding: 0 !important;
-
     vertical-align: top !important;
-
 }
 
-
-
-/* 4. 调整行号的颜色、右侧间距与防选中 */
-
+/* 4. 行号样式优化 */
 .post-content .lntd:first-child pre code span,
-
 .post-content .ln {
-
-    color: #606366 !important;     /* Darcula 风格行号灰 */
-
-    padding-left: 10px !important;
-
-    padding-right: 3px !important;  /* 行号与代码的间距 */
-
-    user-select: none !important;   /* 禁止鼠标选中行号 */
-
+    color: #606366 !important;
+    padding-left: 12px !important;
+    padding-right: 8px !important;
+    user-select: none !important;
 }
-
-
-/* 设置代码块容器定位 */
-.post-content .highlight {
-    position: relative;
-}
-
-/* 通过伪元素在右上角渲染语言名称 */
-.post-content .highlight[data-lang]::before {
-    content: attr(data-lang);
-    position: absolute;
-    top: 6px;
-    right: 12px;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    color: var(--secondary); /* 适配 PaperMod 的主题变量 */
-    opacity: 0.6;
-    pointer-events: none;
-    z-index: 1;
-}
-
-/* 如果开启了复制按钮，避免文字重叠 */
-.post-content .highlight:hover[data-lang]::before {
-    opacity: 0.2; /* 鼠标悬停时降低透明度，避免遮挡复制按钮 */
-    transition: opacity 0.2s ease;
-}
-
-
 
 .post-content .lntd:last-child pre {
-
-    padding-right: 40px !important; /* 给右侧 copy 按钮预留空间 */
-
+    padding-right: 12px !important;
 }
 
-
-
-/* 5. 重新定位 Copy 按钮（防止撑高顶部留白） */
-
-.post-content .highlight .copy-code {
-
+/* 5. 左上角显示代码语言 (如 CPP, BASH) */
+.post-content .highlight::before {
+    content: attr(data-lang);
     position: absolute !important;
-
     top: 6px !important;
-
-    right: 8px !important;
-
-    margin: 0 !important;
-
-    padding: 2px 6px !important;
-
+    left: 12px !important;
     font-size: 11px !important;
-
-    background: rgba(255, 255, 255, 0.08) !important;
-
-    border-radius: 4px !important;
-
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    color: #a9b7c6 !important; /* JetBrains 字体风格高亮灰 */
+    opacity: 0.8 !important;
+    pointer-events: none !important;
+    z-index: 5 !important;
     line-height: 1 !important;
-
 }
 
-
-
-/* 6. 行内代码（`code`）样式 */
-
-.post-content p code,
-
-.post-content li code {
-
-    background-color: rgba(255, 255, 255, 0.1) !important;
-
-    padding: 2px 6px !important;
-
+/* 6. 右上角 Copy 按钮精准定位 */
+.post-content .highlight .copy-code {
+    position: absolute !important;
+    top: 6px !important;
+    right: 10px !important;
+    margin: 0 !important;
+    padding: 3px 8px !important;
+    font-size: 11px !important;
+    color: #a9b7c6 !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 4px !important;
-
+    line-height: 1 !important;
+    z-index: 5 !important;
+    cursor: pointer;
 }
 
+.post-content .highlight .copy-code:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+}
 
-
+/* 7. 行内代码（`code`）样式 */
+.post-content p code,
+.post-content li code {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+}
