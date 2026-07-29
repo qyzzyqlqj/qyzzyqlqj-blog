@@ -7,3 +7,44 @@ iframe {
 .entry-cover img {
     border: 1px solid var(--border);
 }
+
+/* 1. 统一代码字体与排版 */
+.post-content code,
+.post-content pre {
+    font-family: "JetBrains Mono", Consolas, "Fira Code", Monaco, "Courier New", Courier, monospace !important;
+    font-style: normal !important; /* 强制取消斜体 */
+    font-size: 14px !important;    /* 字号 */
+    line-height: 1.6 !important;   /* 行高 */
+}
+
+/* 2. 容器整体加圆角与背景（兼容带行号和不带行号的情况） */
+.post-content .highlight,
+.post-content pre {
+    background-color: #1e1e1e !important; /* 整体深色背景 */
+    border-radius: 8px !important;         /* 圆角 */
+    border: 1px solid #333333 !important;  /* 边框 */
+}
+
+/* 消除带行号时内部两列 pre 的独立背景与重复边框 */
+.post-content .highlight pre {
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 12px 0 !important;
+}
+
+/* 3. 调整行号的颜色、右侧间距与防选中 */
+.post-content .lntd:first-child pre code span,
+.post-content .ln {
+    color: #5c6370 !important;     /* 行号颜色 */
+    padding-right: 12px !important; /* 行号与代码的间距 */
+    user-select: none !important;   /* 禁止鼠标选中行号 */
+}
+
+/* 4. 行内代码（`code`）样式 */
+.post-content p code,
+.post-content li code {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+}
