@@ -1,151 +1,201 @@
 /* Custom styles added to demo */
 
-
-
 iframe {
-
     border-radius: var(--radius) !important;
-
 }
-
-
 
 .entry-cover img {
-
     border: 1px solid var(--border);
-
 }
-
-
 
 /* 1. 统一代码字体与排版 */
-
 .post-content code,
-
 .post-content pre {
-
     font-family: "JetBrains Mono", Consolas, "Fira Code", Monaco, "Courier New", Courier, monospace !important;
-
     font-style: normal !important; /* 强制取消斜体 */
-
     font-size: 14px !important;    /* 字号 */
-
     line-height: 1.4 !important;   /* 行高缩紧 */
-
 }
 
-
-
-/* 2. 容器整体加圆角与背景 */
-
+/* 2. 容器整体加圆角与背景（预留顶部空间给语言标签） */
 .post-content .highlight {
-
     position: relative !important;
-
     background-color: #2b2b2b !important; /* JetBrains 经典深色背景 */
-
     border-radius: 8px !important;
-
     border: 1px solid #3c3f41 !important;
-
-    margin: 1em 0 !important;
-
-    padding: 0 !important; /* 彻底清除外层容器 padding */
-
+    margin: 1.5em 0 1em 0 !important;
+    padding-top: 28px !important; /* 给左上角语言标签和 Copy 按钮留出空间 */
 }
-
-
 
 /* 3. 消除内部 pre 与 td 的所有多余留白 */
-
 .post-content pre {
-
     background-color: transparent !important;
-
     border: none !important;
-
     border-radius: 0 !important;
-
     margin: 0 !important;
-
     padding: 8px 0 !important; /* 上下内边距收紧至 8px */
-
 }
-
-
 
 .post-content .highlight td {
-
     padding: 0 !important;
-
     vertical-align: top !important;
-
 }
-
-
 
 /* 4. 调整行号的颜色、右侧间距与防选中 */
-
 .post-content .lntd:first-child pre code span,
-
 .post-content .ln {
-
     color: #606366 !important;     /* Darcula 风格行号灰 */
-
     padding-left: 10px !important;
-
     padding-right: 3px !important;  /* 行号与代码的间距 */
-
     user-select: none !important;   /* 禁止鼠标选中行号 */
-
 }
-
-
 
 .post-content .lntd:last-child pre {
-
     padding-right: 40px !important; /* 给右侧 copy 按钮预留空间 */
-
 }
 
-
-
-/* 5. 重新定位 Copy 按钮（防止撑高顶部留白） */
-
+/* 5. 重新定位 Copy 按钮（固定在右上角） */
 .post-content .highlight .copy-code {
-
     position: absolute !important;
-
     top: 6px !important;
-
     right: 8px !important;
-
     margin: 0 !important;
-
-    padding: 2px 6px !important;
-
+    padding: 3px 8px !important;
     font-size: 11px !important;
-
     background: rgba(255, 255, 255, 0.08) !important;
-
     border-radius: 4px !important;
-
     line-height: 1 !important;
-
+    z-index: 2;
 }
-
-
 
 /* 6. 行内代码（`code`）样式 */
-
 .post-content p code,
-
 .post-content li code {
-
     background-color: rgba(255, 255, 255, 0.1) !important;
-
     padding: 2px 6px !important;
-
     border-radius: 4px !important;
+}
 
+/* =========================================================
+   7. 左上角语言标签及 VSCode 风格高亮色
+   ========================================================= */
+
+/* 默认语言标签基础样式 */
+.post-content .highlight[data-lang]::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 6px;
+    left: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: var(--font-family, sans-serif);
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+    line-height: 1;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.1); /* 未匹配语言时的默认灰色 */
+    color: #cccccc;
+}
+
+/* 隐藏未标记语言或空语言的标签 */
+.post-content .highlight[data-lang=""]::before,
+.post-content .highlight[data-lang="fallback"]::before,
+.post-content .highlight[data-lang="text"]::before {
+    display: none !important;
+}
+
+/* --- 各语言经典/VSCode 风格配色 --- */
+
+/* C / C++ */
+.post-content .highlight[data-lang="cpp"]::before,
+.post-content .highlight[data-lang="c"]::before,
+.post-content .highlight[data-lang="c++"]::before {
+    background-color: rgba(0, 89, 156, 0.25) !important;
+    color: #5c9ded !important;
+}
+
+/* JavaScript */
+.post-content .highlight[data-lang="js"]::before,
+.post-content .highlight[data-lang="javascript"]::before {
+    background-color: rgba(247, 223, 30, 0.2) !important;
+    color: #f7df1e !important;
+}
+
+/* TypeScript */
+.post-content .highlight[data-lang="ts"]::before,
+.post-content .highlight[data-lang="typescript"]::before {
+    background-color: rgba(49, 120, 198, 0.25) !important;
+    color: #3178c6 !important;
+}
+
+/* Python */
+.post-content .highlight[data-lang="py"]::before,
+.post-content .highlight[data-lang="python"]::before {
+    background-color: rgba(55, 118, 171, 0.25) !important;
+    color: #4b8bbe !important;
+}
+
+/* HTML */
+.post-content .highlight[data-lang="html"]::before {
+    background-color: rgba(227, 76, 38, 0.2) !important;
+    color: #e34c26 !important;
+}
+
+/* CSS / SCSS / LESS */
+.post-content .highlight[data-lang="css"]::before,
+.post-content .highlight[data-lang="scss"]::before,
+.post-content .highlight[data-lang="less"]::before {
+    background-color: rgba(86, 61, 124, 0.3) !important;
+    color: #c678dd !important;
+}
+
+/* Go */
+.post-content .highlight[data-lang="go"]::before,
+.post-content .highlight[data-lang="golang"]::before {
+    background-color: rgba(0, 173, 216, 0.2) !important;
+    color: #00add8 !important;
+}
+
+/* Java */
+.post-content .highlight[data-lang="java"]::before {
+    background-color: rgba(231, 111, 0, 0.2) !important;
+    color: #ea2d2e !important;
+}
+
+/* Rust */
+.post-content .highlight[data-lang="rust"]::before,
+.post-content .highlight[data-lang="rs"]::before {
+    background-color: rgba(222, 165, 132, 0.2) !important;
+    color: #dea584 !important;
+}
+
+/* PHP */
+.post-content .highlight[data-lang="php"]::before {
+    background-color: rgba(79, 93, 149, 0.25) !important;
+    color: #8892bf !important;
+}
+
+/* Shell / Bash / Zsh */
+.post-content .highlight[data-lang="bash"]::before,
+.post-content .highlight[data-lang="sh"]::before,
+.post-content .highlight[data-lang="zsh"]::before,
+.post-content .highlight[data-lang="shell"]::before {
+    background-color: rgba(78, 161, 66, 0.2) !important;
+    color: #89e051 !important;
+}
+
+/* JSON / YAML / TOML */
+.post-content .highlight[data-lang="json"]::before,
+.post-content .highlight[data-lang="yaml"]::before,
+.post-content .highlight[data-lang="yml"]::before,
+.post-content .highlight[data-lang="toml"]::before {
+    background-color: rgba(203, 186, 122, 0.2) !important;
+    color: #cbcb7a !important;
+}
+
+/* SQL */
+.post-content .highlight[data-lang="sql"]::before {
+    background-color: rgba(227, 144, 33, 0.2) !important;
+    color: #e39021 !important;
 }
