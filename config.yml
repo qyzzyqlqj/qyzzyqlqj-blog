@@ -82,3 +82,6 @@ markup:
             - ['\\[', '\\]']
   highlight:
     noClasses: false
+    codeFences: true             # 确保代码块解析开启
+    lineNos: true                # 开启代码块行号
+    style: darcula               # JetBrains 经典 Darcula 高亮主题
