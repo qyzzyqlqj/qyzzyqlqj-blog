@@ -193,13 +193,13 @@ iframe {
 .codeblock-wrapper .lnlinks {
     color: #606366 !important;
     padding-left: 10px !important;
-    padding-right: 4px !important;
+    padding-right: 2px !important;
     user-select: none !important;
     -webkit-user-select: none !important;
 }
 
 .codeblock-wrapper .lntd:last-child pre {
-    padding-left: 4px !important;
+    padding-left: 2px !important;
     padding-right: 40px !important;
 }
 
