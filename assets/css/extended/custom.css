@@ -33,106 +33,105 @@ iframe {
 }
 
 /* ==========================================================================
-   3. 语言标签（真实 DOM 元素，独占顶部一行）
+   3. 语言标签（高度与字号排版）
    ========================================================================== */
 .code-lang {
     display: block !important;
-    padding: 8px 14px 4px 14px !important;
+    padding: 6px 14px 0px 14px !important;
     font-family: "JetBrains Mono", Consolas, Monaco, monospace !important;
     font-size: 11px !important;
     font-weight: 600 !important;
     letter-spacing: 0.04em !important;
     line-height: 1 !important;
     text-transform: none !important;
-    color: #9da5b4;
+    color: #abb2bf; /* 默认通用浅灰 */
     user-select: none !important;
     -webkit-user-select: none !important;
 }
 
-/* --- 语言配色，对齐 VSCode 文件图标色系 --- */
+/* --- 语言配色：统一调浅、降低饱和度，比 #2b2b2b 代码框稍微浅一些 --- */
 .code-lang--c,
 .code-lang--cpp,
-.code-lang--cxx           { color: #659ad2; }
+.code-lang--cxx           { color: #98c379; } /* 淡柔蓝/淡青 */
 .code-lang--cs,
-.code-lang--csharp        { color: #9b4f96; }
+.code-lang--csharp        { color: #c678dd; } /* 淡柔紫 */
 .code-lang--js,
 .code-lang--javascript,
-.code-lang--jsx           { color: #f7df1e; }
+.code-lang--jsx           { color: #e5c07b; } /* 淡柔金黄 */
 .code-lang--ts,
 .code-lang--typescript,
-.code-lang--tsx           { color: #3178c6; }
-.code-lang--vue           { color: #41b883; }
-.code-lang--svelte        { color: #ff3e00; }
+.code-lang--tsx           { color: #61afef; } /* 明亮浅蓝 */
+.code-lang--vue           { color: #7fcdad; } /* 淡柔青绿 */
+.code-lang--svelte        { color: #ff8f75; } /* 柔和橙红 */
 .code-lang--py,
-.code-lang--python        { color: #4ec9b0; }
+.code-lang--python        { color: #71cfbe; } /* 浅青绿 */
 .code-lang--rb,
-.code-lang--ruby          { color: #cc342d; }
-.code-lang--php           { color: #8993be; }
-.code-lang--perl          { color: #0298c3; }
-.code-lang--java          { color: #e76f00; }
+.code-lang--ruby          { color: #e06c75; } /* 淡珊瑚红 */
+.code-lang--php           { color: #b4befe; } /* 柔和浅紫蓝 */
+.code-lang--perl          { color: #76cddb; } /* 淡冰蓝 */
+.code-lang--java          { color: #f0a05d; } /* 浅暖橙 */
 .code-lang--kt,
-.code-lang--kotlin        { color: #a97bff; }
-.code-lang--scala         { color: #dc322f; }
+.code-lang--kotlin        { color: #cba6f7; } /* 淡浅紫 */
+.code-lang--scala         { color: #e88388; } /* 淡红 */
 .code-lang--go,
-.code-lang--golang        { color: #00add8; }
+.code-lang--golang        { color: #64d8f6; } /* 浅天蓝 */
 .code-lang--rs,
-.code-lang--rust          { color: #dea584; }
-.code-lang--zig           { color: #f7a41d; }
-.code-lang--swift         { color: #f05138; }
-.code-lang--dart          { color: #00b4ab; }
-.code-lang--lua           { color: #51a0cf; }
+.code-lang--rust          { color: #f5c2e7; } /* 淡粉绯 */
+.code-lang--zig           { color: #f9e2af; } /* 柔和浅黄 */
+.code-lang--swift         { color: #ff9e80; } /* 浅橙 */
+.code-lang--dart          { color: #70d6ff; } /* 浅青 */
+.code-lang--lua           { color: #89b4fa; } /* 淡蓝色 */
 .code-lang--hs,
-.code-lang--haskell       { color: #5e5086; }
-.code-lang--elixir        { color: #a074c4; }
-.code-lang--erlang        { color: #b83998; }
-.code-lang--clojure       { color: #8dc63f; }
-.code-lang--r             { color: #276dc3; }
-.code-lang--matlab        { color: #e16737; }
+.code-lang--haskell       { color: #b4befe; } /* 浅紫 */
+.code-lang--elixir        { color: #cba6f7; } /* 浅薰衣草 */
+.code-lang--erlang        { color: #f5c2e7; } /* 淡洋红 */
+.code-lang--clojure       { color: #a6e3a1; } /* 浅嫩绿 */
+.code-lang--r             { color: #74c7ec; } /* 浅海蓝 */
+.code-lang--matlab        { color: #fab387; } /* 浅橙 */
 .code-lang--objc,
-.code-lang--objectivec    { color: #438eff; }
+.code-lang--objectivec    { color: #89dceb; } /* 浅湖蓝 */
 .code-lang--asm,
-.code-lang--nasm          { color: #a67f59; }
-.code-lang--html          { color: #e34c26; }
-.code-lang--css           { color: #c586c0; }
+.code-lang--nasm          { color: #d5c4a1; } /* 浅沙黄 */
+.code-lang--html          { color: #f38ba8; } /* 浅粉红 */
+.code-lang--css           { color: #e5c07b; } /* 浅黄绿 */
 .code-lang--scss,
-.code-lang--sass          { color: #cf649a; }
-.code-lang--less          { color: #7aa3cc; }
+.code-lang--sass          { color: #f5c2e7; } /* 柔粉 */
+.code-lang--less          { color: #89dceb; } /* 浅蓝 */
 .code-lang--sh,
 .code-lang--bash,
 .code-lang--zsh,
-.code-lang--shell         { color: #98c379; }
+.code-lang--shell         { color: #a6e3a1; } /* 淡绿 */
 .code-lang--ps1,
-.code-lang--powershell    { color: #5391fe; }
+.code-lang--powershell    { color: #89b4fa; } /* 淡蓝 */
 .code-lang--docker,
-.code-lang--dockerfile    { color: #2496ed; }
+.code-lang--dockerfile    { color: #74c7ec; } /* 淡水蓝 */
 .code-lang--make,
-.code-lang--makefile      { color: #6a9955; }
-.code-lang--json          { color: #cbcb41; }
+.code-lang--makefile      { color: #94e2d5; } /* 淡青 */
+.code-lang--json          { color: #e5c07b; } /* 淡黄 */
 .code-lang--yaml,
-.code-lang--yml           { color: #e06c75; }
-.code-lang--toml          { color: #c98a6b; }
-.code-lang--xml           { color: #e37933; }
-.code-lang--ini           { color: #d4d4d4; }
+.code-lang--yml           { color: #f38ba8; } /* 浅红 */
+.code-lang--toml          { color: #fab387; } /* 浅淡橙 */
+.code-lang--xml           { color: #f9e2af; } /* 浅暖黄 */
+.code-lang--ini           { color: #bac2de; } /* 浅灰蓝 */
 .code-lang--sql,
 .code-lang--mysql,
-.code-lang--postgres      { color: #e38c00; }
-.code-lang--graphql       { color: #e535ab; }
+.code-lang--postgres      { color: #f9e2af; } /* 浅米黄 */
+.code-lang--graphql       { color: #f5c2e7; } /* 淡粉 */
 .code-lang--hcl,
-.code-lang--terraform     { color: #a970ff; }
-.code-lang--nginx         { color: #00b04f; }
+.code-lang--terraform     { color: #cba6f7; } /* 淡紫 */
+.code-lang--nginx         { color: #a6e3a1; } /* 淡绿 */
 .code-lang--md,
-.code-lang--markdown      { color: #9da5b4; }
+.code-lang--markdown      { color: #abb2bf; } /* 明亮中灰 */
 .code-lang--tex,
-.code-lang--latex         { color: #7ba05b; }
+.code-lang--latex         { color: #a6e3a1; } /* 浅绿 */
 .code-lang--diff,
-.code-lang--patch         { color: #e8bf6a; }
+.code-lang--patch         { color: #e5c07b; } /* 浅金黄 */
 .code-lang--text,
 .code-lang--plaintext,
-.code-lang--txt           { color: #6b7280; }
+.code-lang--txt           { color: #9399b2; } /* 低调浅灰 */
 
 /* ==========================================================================
-   4. 内层结构全部透明化（修复代码框重叠 / 双边框）
-      Chroma 结构：.highlight > .chroma > table.lntable > tr > td.lntd > pre
+   4. 内层结构透明化
    ========================================================================== */
 .codeblock-wrapper .highlight,
 .codeblock-wrapper .chroma,
@@ -153,11 +152,11 @@ iframe {
 }
 
 .codeblock-wrapper pre {
-    padding: 6px 0 10px 0 !important;
+    padding: 2px 0 6px 0 !important;
     overflow-x: auto !important;
 }
 
-/* 表格布局归零，消除行号列与代码列的缝隙 */
+/* 表格布局归零 */
 .codeblock-wrapper table.lntable {
     display: table !important;
     width: 100% !important;
@@ -186,14 +185,14 @@ iframe {
 }
 
 /* ==========================================================================
-   5. 行号：颜色 / 间距 / 禁止选中
+   5. 行号：缩紧代码与行号的距离
    ========================================================================== */
 .codeblock-wrapper .lnt,
 .codeblock-wrapper .ln,
 .codeblock-wrapper .lnlinks {
     color: #606366 !important;
-    padding-left: 10px !important;
-    padding-right: 2px !important;
+    padding-left: 12px !important;
+    padding-right: 4px !important;
     user-select: none !important;
     -webkit-user-select: none !important;
 }
@@ -206,25 +205,24 @@ iframe {
 /* 未启用行号时的单列 pre */
 .codeblock-wrapper > .highlight > pre,
 .codeblock-wrapper > .highlight > .chroma > pre {
-    padding-left: 14px !important;
+    padding-left: 12px !important;
     padding-right: 40px !important;
 }
 
 /* ==========================================================================
    6. Copy 按钮
-      内层被强制 position: static，按钮的 absolute 以 .codeblock-wrapper 为基准
    ========================================================================== */
 .codeblock-wrapper .copy-code {
     position: absolute !important;
-    top: 4px !important;
-    right: 6px !important;
+    top: 5px !important;
+    right: 8px !important;
     z-index: 3;
     margin: 0 !important;
     padding: 3px 7px !important;
     font-family: inherit !important;
     font-size: 11px !important;
     line-height: 1 !important;
-    color: #9da5b4 !important;
+    color: #abb2bf !important;
     background: rgba(255, 255, 255, 0.08) !important;
     border: none !important;
     border-radius: 4px !important;
