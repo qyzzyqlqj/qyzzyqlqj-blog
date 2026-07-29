@@ -1,4 +1,4 @@
-/* ==================== 彻底修复版：VS Code 风格代码框 ==================== */
+/* ==================== 彻底修复版：极度激进消除 PaperMod 代码干扰 ==================== */
 
 /* 1. 字体与基本排版 */
 .post-content code,
@@ -7,9 +7,10 @@
     font-style: normal !important;
     font-size: 14px !important;
     line-height: 1.4 !important;
+    background: transparent !important; /* 强制行内代码也透明，防止 interference */
 }
 
-/* 2. 外层唯一容器（解决双层边框与拉爆问题） */
+/* 2. 外层唯一容器（VS Code 风格） */
 .post-content .highlight {
     position: relative !important;
     background-color: #1e1e1e !important; /* VS Code 经典深色背景 */
@@ -20,33 +21,52 @@
     overflow: hidden !important;
 }
 
-/* 3. 彻底清空内部所有元素的背景、边框与边距，消除内层方框 */
+/* 3. 极其激进地清空内部所有元素的干扰样式（核心修复“爆了”的问题） */
 .post-content .highlight .chroma,
 .post-content .highlight pre,
 .post-content .highlight table,
-.post-content .highlight td {
+.post-content .highlight tr,
+.post-content .highlight td,
+.post-content .highlight code,
+.post-content .highlight code span { /* 最激进层：甚至清空单个代码字符的边距 */
     background: transparent !important;
     border: none !important;
     border-radius: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
     box-shadow: none !important;
+    width: auto !important;
+    max-width: none !important;
+    display: inline !important; /* 确保代码行内元素自然流动 */
 }
 
-/* 4. 行号区域细节调整 */
+/* 4. 行号区域细节调整 (确保对齐) */
 .post-content .lntd:first-child pre code span,
 .post-content .ln {
+    display: inline-block !important; /* 行号必须是块状以便固定宽度 */
+    text-align: right !important;
+    width: 2.5em !important;           /* 固定行号宽度 */
     color: #858585 !important;           /* VS Code 风格行号灰 */
-    padding-left: 12px !important;
-    padding-right: 10px !important;
+    padding-left: 10px !important;
+    padding-right: 15px !important;      /* 固定行号右间距 */
     user-select: none !important;
+    vertical-align: top !important;      /* 确保垂直对齐 */
+}
+
+/* 5. 修正代码主体的内边距，确保与行号平行对齐 */
+.post-content .lntd:last-child pre,
+.post-content .lntd:last-child {
+    display: block !important;
+    width: 100% !important;
 }
 
 .post-content .lntd:last-child pre {
     padding-right: 12px !important;
+    padding-left: 0 !important;
+    vertical-align: top !important;
 }
 
-/* 5. 左上角代码语言标识（VS Code 经典蓝色高亮） */
+/* 6. 左上角代码语言标识（VS Code 经典蓝色高亮） */
 .post-content .highlight[data-lang]::before {
     content: attr(data-lang);
     position: absolute !important;
@@ -56,12 +76,15 @@
     font-weight: 700 !important;
     text-transform: uppercase !important;
     color: #569cd6 !important;           /* VS Code 经典关键字/类型蓝 */
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
     line-height: 1 !important;
     pointer-events: none !important;
-    z-index: 5 !important;
+    z-index: 10 !important;
 }
 
-/* 6. 右上角 Copy 按钮（微调对齐与 VS Code 暗色风格） */
+/* 7. 右上角 Copy 按钮（微调对齐与 VS Code 暗色风格） */
 .post-content .highlight .copy-code {
     position: absolute !important;
     top: 5px !important;                 /* 与左侧语言标签平行 */
@@ -74,8 +97,9 @@
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 4px !important;
     line-height: 1 !important;
-    z-index: 5 !important;
+    z-index: 10 !important;
     cursor: pointer;
+    text-transform: none !important;
 }
 
 .post-content .highlight .copy-code:hover {
@@ -83,7 +107,7 @@
     color: #ffffff !important;
 }
 
-/* 7. 行内代码（`code`）保持轻量 */
+/* 8. 行内代码（`code`）保持轻量 */
 .post-content p code,
 .post-content li code {
     background-color: rgba(255, 255, 255, 0.1) !important;
