@@ -8,194 +8,406 @@ iframe {
     border: 1px solid var(--border);
 }
 
-/* 1. 统一代码字体与排版 */
+/* ==========================================================================
+   1. 统一代码字体与排版
+   ========================================================================== */
 .post-content code,
 .post-content pre {
     font-family: "JetBrains Mono", Consolas, "Fira Code", Monaco, "Courier New", Courier, monospace !important;
-    font-style: normal !important; /* 强制取消斜体 */
-    font-size: 14px !important;    /* 字号 */
-    line-height: 1.4 !important;   /* 行高缩紧 */
+    font-style: normal !important;  /* 强制取消斜体 */
+    font-size: 14px !important;
+    line-height: 1.4 !important;
 }
 
-/* 2. 容器整体加圆角与背景（预留顶部空间给语言标签） */
-.post-content .highlight {
+/* ==========================================================================
+   2. 最外层容器：唯一负责背景、边框、圆角
+   ========================================================================== */
+.post-content .codeblock-wrapper {
     position: relative !important;
-    background-color: #2b2b2b !important; /* JetBrains 经典深色背景 */
-    border-radius: 8px !important;
+    background-color: #2b2b2b !important;   /* JetBrains Darcula 背景 */
     border: 1px solid #3c3f41 !important;
-    margin: 1.5em 0 1em 0 !important;
-    padding-top: 28px !important; /* 给左上角语言标签和 Copy 按钮留出空间 */
+    border-radius: 8px !important;
+    margin: 1em 0 !important;
+    padding: 30px 0 0 0 !important;         /* 顶部为语言标签留出条带 */
+    overflow: hidden !important;            /* 裁掉内部直角，保证圆角生效 */
 }
 
-/* 3. 消除内部 pre 与 td 的所有多余留白 */
-.post-content pre {
+/* 无语言的裸代码块不显示标签，也不需要顶部条带 */
+.post-content .codeblock-wrapper:not([data-lang]),
+.post-content .codeblock-wrapper[data-lang=""] {
+    padding-top: 8px !important;
+}
+
+/* ==========================================================================
+   3. 内层结构全部透明化（修复重叠的关键）
+      Chroma 输出：.highlight > .chroma > table.lntable > tr > td.lntd > pre.chroma
+   ========================================================================== */
+.post-content .codeblock-wrapper .highlight,
+.post-content .codeblock-wrapper .chroma,
+.post-content .codeblock-wrapper pre,
+.post-content .codeblock-wrapper pre.chroma {
+    position: static !important;
     background-color: transparent !important;
+    background-image: none !important;
     border: none !important;
     border-radius: 0 !important;
     margin: 0 !important;
-    padding: 8px 0 !important; /* 上下内边距收紧至 8px */
+    box-shadow: none !important;
 }
 
-.post-content .highlight td {
+.post-content .codeblock-wrapper .highlight,
+.post-content .codeblock-wrapper .chroma {
+    padding: 0 !important;
+    overflow: visible !important;
+}
+
+.post-content .codeblock-wrapper pre {
+    padding: 8px 0 !important;
+    overflow-x: auto !important;
+}
+
+/* 表格布局归零，消除行号列与代码列之间的缝隙 */
+.post-content .codeblock-wrapper table.lntable {
+    width: 100% !important;
+    margin: 0 !important;
+    border: none !important;
+    border-spacing: 0 !important;
+    border-collapse: collapse !important;
+    background: transparent !important;
+    display: table !important;
+}
+
+.post-content .codeblock-wrapper table.lntable tr,
+.post-content .codeblock-wrapper table.lntable td {
+    background: transparent !important;
+    border: none !important;
     padding: 0 !important;
     vertical-align: top !important;
 }
 
-/* 4. 调整行号的颜色、右侧间距与防选中 */
-.post-content .lntd:first-child pre code span,
-.post-content .ln {
-    color: #606366 !important;     /* Darcula 风格行号灰 */
-    padding-left: 10px !important;
-    padding-right: 3px !important;  /* 行号与代码的间距 */
-    user-select: none !important;   /* 禁止鼠标选中行号 */
+/* 行号列不参与宽度分配，代码列吃掉剩余空间 */
+.post-content .codeblock-wrapper .lntd:first-child {
+    width: 1% !important;
+    white-space: nowrap !important;
 }
 
-.post-content .lntd:last-child pre {
-    padding-right: 40px !important; /* 给右侧 copy 按钮预留空间 */
+.post-content .codeblock-wrapper .lntd:last-child {
+    width: 99% !important;
 }
 
-/* 5. 重新定位 Copy 按钮（固定在右上角） */
-.post-content .highlight .copy-code {
+/* ==========================================================================
+   4. 行号样式：颜色、间距、禁止选中
+   ========================================================================== */
+.post-content .codeblock-wrapper .lnt,
+.post-content .codeblock-wrapper .ln,
+.post-content .codeblock-wrapper .lnlinks,
+.post-content .codeblock-wrapper .lntd:first-child pre code span {
+    color: #606366 !important;
+    padding-left: 12px !important;
+    padding-right: 8px !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+}
+
+/* 代码列左侧留一点呼吸空间，右侧给 copy 按钮预留 */
+.post-content .codeblock-wrapper .lntd:last-child pre {
+    padding-left: 4px !important;
+    padding-right: 40px !important;
+}
+
+/* 未启用行号时（单列 pre）的左右内边距 */
+.post-content .codeblock-wrapper > .highlight > pre,
+.post-content .codeblock-wrapper > .highlight > .chroma > pre {
+    padding-left: 14px !important;
+    padding-right: 40px !important;
+}
+
+/* ==========================================================================
+   5. 左上角语言标签（VSCode 配色）
+   ========================================================================== */
+.post-content .codeblock-wrapper::before {
+    content: attr(data-lang);
     position: absolute !important;
-    top: 6px !important;
-    right: 8px !important;
-    margin: 0 !important;
-    padding: 3px 8px !important;
-    font-size: 11px !important;
-    background: rgba(255, 255, 255, 0.08) !important;
-    border-radius: 4px !important;
-    line-height: 1 !important;
+    top: 0 !important;
+    left: 0 !important;
     z-index: 2;
+    padding: 7px 12px 5px 14px;
+    font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1;
+    color: #9da5b4;              /* 默认色，下面按语言覆盖 */
+    pointer-events: none;
 }
 
-/* 6. 行内代码（`code`）样式 */
+.post-content .codeblock-wrapper:not([data-lang])::before,
+.post-content .codeblock-wrapper[data-lang=""]::before {
+    content: none;
+}
+
+/* --- C / C++ / C# --- */
+.post-content .codeblock-wrapper[data-lang="c"]::before {
+    content: "C"; color: #659ad2;
+}
+.post-content .codeblock-wrapper[data-lang="cpp"]::before,
+.post-content .codeblock-wrapper[data-lang="c++"]::before {
+    content: "C++"; color: #659ad2;
+}
+.post-content .codeblock-wrapper[data-lang="csharp"]::before,
+.post-content .codeblock-wrapper[data-lang="cs"]::before,
+.post-content .codeblock-wrapper[data-lang="c#"]::before {
+    content: "C#"; color: #9b4f96;
+}
+
+/* --- JavaScript / TypeScript 家族 --- */
+.post-content .codeblock-wrapper[data-lang="js"]::before,
+.post-content .codeblock-wrapper[data-lang="javascript"]::before {
+    content: "JavaScript"; color: #f7df1e;
+}
+.post-content .codeblock-wrapper[data-lang="jsx"]::before {
+    content: "JSX"; color: #f7df1e;
+}
+.post-content .codeblock-wrapper[data-lang="ts"]::before,
+.post-content .codeblock-wrapper[data-lang="typescript"]::before {
+    content: "TypeScript"; color: #3178c6;
+}
+.post-content .codeblock-wrapper[data-lang="tsx"]::before {
+    content: "TSX"; color: #3178c6;
+}
+.post-content .codeblock-wrapper[data-lang="vue"]::before {
+    content: "Vue"; color: #41b883;
+}
+.post-content .codeblock-wrapper[data-lang="svelte"]::before {
+    content: "Svelte"; color: #ff3e00;
+}
+
+/* --- Python / Ruby / PHP / Perl --- */
+.post-content .codeblock-wrapper[data-lang="python"]::before,
+.post-content .codeblock-wrapper[data-lang="py"]::before {
+    content: "Python"; color: #4ec9b0;
+}
+.post-content .codeblock-wrapper[data-lang="ruby"]::before,
+.post-content .codeblock-wrapper[data-lang="rb"]::before {
+    content: "Ruby"; color: #cc342d;
+}
+.post-content .codeblock-wrapper[data-lang="php"]::before {
+    content: "PHP"; color: #8993be;
+}
+.post-content .codeblock-wrapper[data-lang="perl"]::before {
+    content: "Perl"; color: #0298c3;
+}
+
+/* --- JVM / .NET 系 --- */
+.post-content .codeblock-wrapper[data-lang="java"]::before {
+    content: "Java"; color: #e76f00;
+}
+.post-content .codeblock-wrapper[data-lang="kotlin"]::before {
+    content: "Kotlin"; color: #a97bff;
+}
+.post-content .codeblock-wrapper[data-lang="scala"]::before {
+    content: "Scala"; color: #dc322f;
+}
+.post-content .codeblock-wrapper[data-lang="groovy"]::before {
+    content: "Groovy"; color: #4298b8;
+}
+
+/* --- 系统级语言 --- */
+.post-content .codeblock-wrapper[data-lang="go"]::before,
+.post-content .codeblock-wrapper[data-lang="golang"]::before {
+    content: "Go"; color: #00add8;
+}
+.post-content .codeblock-wrapper[data-lang="rust"]::before,
+.post-content .codeblock-wrapper[data-lang="rs"]::before {
+    content: "Rust"; color: #dea584;
+}
+.post-content .codeblock-wrapper[data-lang="zig"]::before {
+    content: "Zig"; color: #f7a41d;
+}
+.post-content .codeblock-wrapper[data-lang="swift"]::before {
+    content: "Swift"; color: #f05138;
+}
+.post-content .codeblock-wrapper[data-lang="objectivec"]::before,
+.post-content .codeblock-wrapper[data-lang="objc"]::before {
+    content: "Objective-C"; color: #438eff;
+}
+.post-content .codeblock-wrapper[data-lang="dart"]::before {
+    content: "Dart"; color: #00b4ab;
+}
+.post-content .codeblock-wrapper[data-lang="lua"]::before {
+    content: "Lua"; color: #51a0cf;
+}
+.post-content .codeblock-wrapper[data-lang="haskell"]::before,
+.post-content .codeblock-wrapper[data-lang="hs"]::before {
+    content: "Haskell"; color: #5e5086;
+}
+.post-content .codeblock-wrapper[data-lang="elixir"]::before {
+    content: "Elixir"; color: #a074c4;
+}
+.post-content .codeblock-wrapper[data-lang="erlang"]::before {
+    content: "Erlang"; color: #b83998;
+}
+.post-content .codeblock-wrapper[data-lang="clojure"]::before {
+    content: "Clojure"; color: #8dc63f;
+}
+.post-content .codeblock-wrapper[data-lang="r"]::before {
+    content: "R"; color: #276dc3;
+}
+.post-content .codeblock-wrapper[data-lang="matlab"]::before {
+    content: "MATLAB"; color: #e16737;
+}
+.post-content .codeblock-wrapper[data-lang="fortran"]::before {
+    content: "Fortran"; color: #734f96;
+}
+.post-content .codeblock-wrapper[data-lang="asm"]::before,
+.post-content .codeblock-wrapper[data-lang="nasm"]::before,
+.post-content .codeblock-wrapper[data-lang="assembly"]::before {
+    content: "Assembly"; color: #6e4c13;
+}
+
+/* --- Web 标记与样式 --- */
+.post-content .codeblock-wrapper[data-lang="html"]::before {
+    content: "HTML"; color: #e34c26;
+}
+.post-content .codeblock-wrapper[data-lang="css"]::before {
+    content: "CSS"; color: #c586c0;
+}
+.post-content .codeblock-wrapper[data-lang="scss"]::before,
+.post-content .codeblock-wrapper[data-lang="sass"]::before {
+    content: "Sass"; color: #cf649a;
+}
+.post-content .codeblock-wrapper[data-lang="less"]::before {
+    content: "Less"; color: #1d365d;
+}
+
+/* --- Shell / 配置 / 数据 --- */
+.post-content .codeblock-wrapper[data-lang="bash"]::before,
+.post-content .codeblock-wrapper[data-lang="sh"]::before,
+.post-content .codeblock-wrapper[data-lang="shell"]::before,
+.post-content .codeblock-wrapper[data-lang="zsh"]::before {
+    content: "Shell"; color: #98c379;
+}
+.post-content .codeblock-wrapper[data-lang="powershell"]::before,
+.post-content .codeblock-wrapper[data-lang="ps1"]::before {
+    content: "PowerShell"; color: #5391fe;
+}
+.post-content .codeblock-wrapper[data-lang="dockerfile"]::before,
+.post-content .codeblock-wrapper[data-lang="docker"]::before {
+    content: "Dockerfile"; color: #2496ed;
+}
+.post-content .codeblock-wrapper[data-lang="makefile"]::before,
+.post-content .codeblock-wrapper[data-lang="make"]::before {
+    content: "Makefile"; color: #427819;
+}
+.post-content .codeblock-wrapper[data-lang="json"]::before {
+    content: "JSON"; color: #cbcb41;
+}
+.post-content .codeblock-wrapper[data-lang="yaml"]::before,
+.post-content .codeblock-wrapper[data-lang="yml"]::before {
+    content: "YAML"; color: #cb171e;
+}
+.post-content .codeblock-wrapper[data-lang="toml"]::before {
+    content: "TOML"; color: #9c4221;
+}
+.post-content .codeblock-wrapper[data-lang="xml"]::before {
+    content: "XML"; color: #e37933;
+}
+.post-content .codeblock-wrapper[data-lang="ini"]::before {
+    content: "INI"; color: #d4d4d4;
+}
+.post-content .codeblock-wrapper[data-lang="sql"]::before,
+.post-content .codeblock-wrapper[data-lang="postgres"]::before,
+.post-content .codeblock-wrapper[data-lang="mysql"]::before {
+    content: "SQL"; color: #e38c00;
+}
+.post-content .codeblock-wrapper[data-lang="graphql"]::before {
+    content: "GraphQL"; color: #e535ab;
+}
+.post-content .codeblock-wrapper[data-lang="hcl"]::before,
+.post-content .codeblock-wrapper[data-lang="terraform"]::before {
+    content: "Terraform"; color: #7b42bc;
+}
+.post-content .codeblock-wrapper[data-lang="nginx"]::before {
+    content: "Nginx"; color: #009639;
+}
+
+/* --- 文档与其他 --- */
+.post-content .codeblock-wrapper[data-lang="markdown"]::before,
+.post-content .codeblock-wrapper[data-lang="md"]::before {
+    content: "Markdown"; color: #9da5b4;
+}
+.post-content .codeblock-wrapper[data-lang="tex"]::before,
+.post-content .codeblock-wrapper[data-lang="latex"]::before {
+    content: "LaTeX"; color: #3d6117;
+}
+.post-content .codeblock-wrapper[data-lang="diff"]::before,
+.post-content .codeblock-wrapper[data-lang="patch"]::before {
+    content: "Diff"; color: #e8bf6a;
+}
+.post-content .codeblock-wrapper[data-lang="text"]::before,
+.post-content .codeblock-wrapper[data-lang="plaintext"]::before,
+.post-content .codeblock-wrapper[data-lang="txt"]::before {
+    content: "TEXT"; color: #6b7280;
+}
+
+/* ==========================================================================
+   6. Copy 按钮定位
+      PaperMod 的 JS 会把按钮插入 .highlight 或 .chroma 内部，
+      因为它们都是 position: static，绝对定位会落到 .codeblock-wrapper 上
+   ========================================================================== */
+.post-content .codeblock-wrapper .copy-code {
+    position: absolute !important;
+    top: 4px !important;
+    right: 6px !important;
+    z-index: 3;
+    margin: 0 !important;
+    padding: 3px 7px !important;
+    font-family: inherit !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+    color: #9da5b4 !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: none !important;
+    border-radius: 4px !important;
+    opacity: 0;
+    transition: opacity 0.15s ease, background 0.15s ease !important;
+    cursor: pointer;
+}
+
+.post-content .codeblock-wrapper:hover .copy-code,
+.post-content .codeblock-wrapper .copy-code:focus-visible {
+    opacity: 1;
+}
+
+.post-content .codeblock-wrapper .copy-code:hover {
+    background: rgba(255, 255, 255, 0.16) !important;
+    color: #d4d4d4 !important;
+}
+
+/* ==========================================================================
+   7. 行内代码
+   ========================================================================== */
 .post-content p code,
-.post-content li code {
-    background-color: rgba(255, 255, 255, 0.1) !important;
+.post-content li code,
+.post-content td code,
+.post-content h1 code,
+.post-content h2 code,
+.post-content h3 code,
+.post-content h4 code,
+.post-content h5 code,
+.post-content h6 code {
+    background-color: rgba(135, 131, 120, 0.15) !important;
+    color: #eb5757 !important;
     padding: 2px 6px !important;
     border-radius: 4px !important;
 }
 
-/* =========================================================
-   7. 左上角语言标签及 VSCode 风格高亮色
-   ========================================================= */
-
-/* 默认语言标签基础样式 */
-.post-content .highlight[data-lang]::before {
-    content: attr(data-lang);
-    position: absolute;
-    top: 6px;
-    left: 10px;
-    font-size: 11px;
-    font-weight: 600;
-    font-family: var(--font-family, sans-serif);
-    text-transform: uppercase;
-    padding: 2px 6px;
-    border-radius: 4px;
-    line-height: 1;
-    z-index: 2;
-    background-color: rgba(255, 255, 255, 0.1); /* 未匹配语言时的默认灰色 */
-    color: #cccccc;
-}
-
-/* 隐藏未标记语言或空语言的标签 */
-.post-content .highlight[data-lang=""]::before,
-.post-content .highlight[data-lang="fallback"]::before,
-.post-content .highlight[data-lang="text"]::before {
-    display: none !important;
-}
-
-/* --- 各语言经典/VSCode 风格配色 --- */
-
-/* C / C++ */
-.post-content .highlight[data-lang="cpp"]::before,
-.post-content .highlight[data-lang="c"]::before,
-.post-content .highlight[data-lang="c++"]::before {
-    background-color: rgba(0, 89, 156, 0.25) !important;
-    color: #5c9ded !important;
-}
-
-/* JavaScript */
-.post-content .highlight[data-lang="js"]::before,
-.post-content .highlight[data-lang="javascript"]::before {
-    background-color: rgba(247, 223, 30, 0.2) !important;
-    color: #f7df1e !important;
-}
-
-/* TypeScript */
-.post-content .highlight[data-lang="ts"]::before,
-.post-content .highlight[data-lang="typescript"]::before {
-    background-color: rgba(49, 120, 198, 0.25) !important;
-    color: #3178c6 !important;
-}
-
-/* Python */
-.post-content .highlight[data-lang="py"]::before,
-.post-content .highlight[data-lang="python"]::before {
-    background-color: rgba(55, 118, 171, 0.25) !important;
-    color: #4b8bbe !important;
-}
-
-/* HTML */
-.post-content .highlight[data-lang="html"]::before {
-    background-color: rgba(227, 76, 38, 0.2) !important;
-    color: #e34c26 !important;
-}
-
-/* CSS / SCSS / LESS */
-.post-content .highlight[data-lang="css"]::before,
-.post-content .highlight[data-lang="scss"]::before,
-.post-content .highlight[data-lang="less"]::before {
-    background-color: rgba(86, 61, 124, 0.3) !important;
-    color: #c678dd !important;
-}
-
-/* Go */
-.post-content .highlight[data-lang="go"]::before,
-.post-content .highlight[data-lang="golang"]::before {
-    background-color: rgba(0, 173, 216, 0.2) !important;
-    color: #00add8 !important;
-}
-
-/* Java */
-.post-content .highlight[data-lang="java"]::before {
-    background-color: rgba(231, 111, 0, 0.2) !important;
-    color: #ea2d2e !important;
-}
-
-/* Rust */
-.post-content .highlight[data-lang="rust"]::before,
-.post-content .highlight[data-lang="rs"]::before {
-    background-color: rgba(222, 165, 132, 0.2) !important;
-    color: #dea584 !important;
-}
-
-/* PHP */
-.post-content .highlight[data-lang="php"]::before {
-    background-color: rgba(79, 93, 149, 0.25) !important;
-    color: #8892bf !important;
-}
-
-/* Shell / Bash / Zsh */
-.post-content .highlight[data-lang="bash"]::before,
-.post-content .highlight[data-lang="sh"]::before,
-.post-content .highlight[data-lang="zsh"]::before,
-.post-content .highlight[data-lang="shell"]::before {
-    background-color: rgba(78, 161, 66, 0.2) !important;
-    color: #89e051 !important;
-}
-
-/* JSON / YAML / TOML */
-.post-content .highlight[data-lang="json"]::before,
-.post-content .highlight[data-lang="yaml"]::before,
-.post-content .highlight[data-lang="yml"]::before,
-.post-content .highlight[data-lang="toml"]::before {
-    background-color: rgba(203, 186, 122, 0.2) !important;
-    color: #cbcb7a !important;
-}
-
-/* SQL */
-.post-content .highlight[data-lang="sql"]::before {
-    background-color: rgba(227, 144, 33, 0.2) !important;
-    color: #e39021 !important;
+/* 代码块内部的 code 不要继承行内样式 */
+.post-content .codeblock-wrapper code,
+.post-content pre code {
+    background-color: transparent !important;
+    color: inherit !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
 }
