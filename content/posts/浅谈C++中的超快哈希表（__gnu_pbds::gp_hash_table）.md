@@ -199,7 +199,7 @@ struct custom_hash {
 
 ### Example
 
-使用 `gp_hash_table` 完成 [【P2580 于是他错误的点名开始了 】](https://www.luogu.com.cn/problem/P2580)（185 ms, [record](https://www.luogu.com.cn/record/289460511)）Code：
+使用 `gp_hash_table` 完成 [【P2580 于是他错误的点名开始了 】](https://www.luogu.com.cn/problem/P2580)（239 ms, [record](https://www.luogu.com.cn/record/289460511)）Code：
 
 ~~~cpp
 #include <bits/stdc++.h>
