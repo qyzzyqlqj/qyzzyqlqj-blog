@@ -242,29 +242,3 @@ int main() {
 
 **愿世上没有卡常！！！**
 
-
-
-
-
-
-<details open>
-<summary>点击展开 / 折叠</summary>
-
-这里是折叠框内部的具体内容。
-
-- 支持**加粗**、*斜体*
-- 支持列表和代码块
-- 支持多行内容
-
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
-int main() {
-    cout << "Hello World!";
-    return 0;
-}
-```
-</details>
-
-你好
