@@ -13,6 +13,7 @@ draft: false
 ---
 
 
+
 > 环境: Debian 13 (bookworm) | 1C/256MB RAM | 3GB 硬盘 | Podman NAT 小鸡
 
 > 日期: 2026-08-02
@@ -163,6 +164,41 @@ systemctl status vaultwarden
 
 > 优势: 崩溃后 5 秒内自动拉起 | 小鸡重启后自动启动 | 内存限制 180M，给系统留 76M 缓冲
 > 注意: 启用 systemd 服务后，之前的 `nohup` 后台进程可以停掉（`kill <PID>`），避免两个实例冲突。
+
+### 2.5 配置 Admin 面板
+
+```bash
+cat << 'EOF' > /etc/systemd/system/vaultwarden.service
+[Unit]
+Description=Vaultwarden Password Manager
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/vaultwarden
+Environment="ROCKET_ADDRESS=0.0.0.0"
+Environment="ROCKET_PORT=8080"
+Environment="DATA_FOLDER=./data"
+Environment="WEB_VAULT_FOLDER=./web-vault"
+Environment="WEB_VAULT_ENABLED=true"
+Environment="ADMIN_TOKEN=你的自定义密码"
+Environment="SIGNUPS_ALLOWED=false"
+ExecStart=/root/vaultwarden/vaultwarden
+Restart=always
+RestartSec=5s
+MemoryMax=180M
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl restart vaultwarden
+```
+
+> 访问方式: 浏览器打开 `https://你的域名/admin`，输入设置的 ADMIN_TOKEN 即可进入管理面板。
+> 设置 `SIGNUPS_ALLOWED=false` 可禁止公开注册，仅允许管理员在后台手动邀请用户。
 
 ---
 
@@ -403,8 +439,6 @@ backup.sh
 ---
 
 ## 问题修复记录
-
-
 
 ### 备份脚本过于频繁（一晚上 Push 上百次）
 
