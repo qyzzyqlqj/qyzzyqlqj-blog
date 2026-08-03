@@ -29,7 +29,7 @@ iframe {
     border-radius: 8px !important;
     margin: 1em 0 !important;
     padding: 0 !important;
-    overflow: hidden !important;
+    overflow: hidden !important; /* 保持外层 hidden 以切出圆角 */
 }
 
 /* ==========================================================================
@@ -38,8 +38,8 @@ iframe {
 .code-lang {
     display: block !important;
     padding: 6px 14px !important;
-    background-color: #313335 !important; /* 修正：比 #2b2b2b 稍浅的背景色 */
-    border-bottom: 1px solid #3c3f41 !important; /* 补充分隔线，层级更清晰 */
+    background-color: #313335 !important;
+    border-bottom: 1px solid #3c3f41 !important;
     font-family: "JetBrains Mono", Consolas, Monaco, monospace !important;
     font-size: 11px !important;
     font-weight: 600 !important;
@@ -133,7 +133,7 @@ iframe {
 .code-lang--txt           { color: #6b7280; }
 
 /* ==========================================================================
-   4. 内层结构全部透明化（修复代码框重叠 / 双边框）
+   4. 内层结构透明化与横向滚动修复
       Chroma 结构：.highlight > .chroma > table.lntable > tr > td.lntd > pre
    ========================================================================== */
 .codeblock-wrapper .highlight,
@@ -148,21 +148,24 @@ iframe {
     box-shadow: none !important;
 }
 
+/* 核心修复：开启横向滚动容器 */
 .codeblock-wrapper .highlight,
 .codeblock-wrapper .chroma {
     padding: 0 !important;
-    overflow: visible !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
 }
 
 .codeblock-wrapper pre {
     padding: 6px 0 8px 0 !important;
-    overflow-x: auto !important;
+    overflow-x: visible !important; /* 滚动交由外层 chroma / highlight 控制 */
 }
 
-/* 表格布局归零，消除行号列与代码列的缝隙 */
+/* 核心修复：允许表格按实际内容延伸，防止硬性截断 */
 .codeblock-wrapper table.lntable {
     display: table !important;
-    width: 100% !important;
+    width: auto !important;
+    min-width: 100% !important;
     margin: 0 !important;
     border: none !important;
     border-spacing: 0 !important;
@@ -184,7 +187,15 @@ iframe {
 }
 
 .codeblock-wrapper .lntd:last-child {
-    width: 99% !important;
+    width: auto !important;
+}
+
+/* 核心修复：强制代码不自动折行，确保能向右延伸触发滚动 */
+.codeblock-wrapper pre code,
+.codeblock-wrapper .lntd:last-child pre {
+    white-space: pre !important;
+    word-break: normal !important;
+    word-wrap: normal !important;
 }
 
 /* ==========================================================================
@@ -195,13 +206,13 @@ iframe {
 .codeblock-wrapper .lnlinks {
     color: #606366 !important;
     padding-left: 6px !important;
-    padding-right: 0px !important; /* 修正：缩小行号右侧内边距 */
+    padding-right: 0px !important;
     user-select: none !important;
     -webkit-user-select: none !important;
 }
 
 .codeblock-wrapper .lntd:last-child pre {
-    padding-left: 0px !important; /* 修正：消除代码列左侧多余内边距 */
+    padding-left: 0px !important;
     padding-right: 40px !important;
 }
 
