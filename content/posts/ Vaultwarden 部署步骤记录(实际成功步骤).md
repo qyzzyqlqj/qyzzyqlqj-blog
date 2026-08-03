@@ -14,8 +14,8 @@ draft: false
 
 
 > 环境: Debian 13 (bookworm) | 1C/256MB RAM | 3GB 硬盘 | Podman NAT 小鸡
+
 > 日期: 2026-08-02
-> GitHub 仓库: [qyzzyqlqj/Vaultwarden_Backup](https://github.com/qyzzyqlqj/Vaultwarden_Backup)
 
 ---
 
@@ -114,7 +114,7 @@ cat vaultwarden.log
 ### 2.3 验证内网可达
 
 ```bash
-curl -I http://10.91.0.51:8080
+curl -I http://127.0.0.1:8080
 ```
 
 预期: `HTTP/1.1 200 OK`
@@ -168,7 +168,7 @@ systemctl status vaultwarden
 
 ## 三、Cloudflare Tunnel 配置 HTTPS 外网访问
 
-由于商家 NAT 端口转发（8080 -> 15510）返回 502 Bad Gateway，且 Bitwarden 客户端强制要求 HTTPS，因此使用 Cloudflare Tunnel 实现外网访问。
+由于商家 NAT 端口转发返回 502 Bad Gateway，且 Bitwarden 客户端强制要求 HTTPS，因此使用 Cloudflare Tunnel 实现外网访问。
 
 ### 3.1 安装 cloudflared
 
@@ -193,18 +193,18 @@ cloudflared service install <YOUR_TOKEN>
 
 在 Cloudflare 网页控制台配置:
 
-| 配置项 | 值 |
-|--------|-----|
-| Subdomain | 自定义（如 `vault`） |
-| Domain | 你的域名 |
-| Service Type | HTTP |
-| URL | `127.0.0.1:8080` |
+| 配置项       | 值                   |
+| ------------ | -------------------- |
+| Subdomain    | 自定义（如 `vault`） |
+| Domain       | 你的域名             |
+| Service Type | HTTP                 |
+| URL          | `127.0.0.1:8080`     |
 
 > 说明: 内部使用 HTTP 是安全的。流量在 cloudflared 与 Vaultwarden 之间走本机环回，公网段全程由 Cloudflare 提供 HTTPS 加密。
 
 ---
 
-## 四、GitHub 自动备份（每 5 分钟）
+## 四、GitHub 自动备份
 
 ### 4.1 生成 SSH Deploy Key
 
@@ -213,7 +213,7 @@ ssh-keygen -t ed25519 -C "vaultwarden-backup" -f ~/.ssh/vw_backup -N ""
 cat ~/.ssh/vw_backup.pub
 ```
 
-输出示例: `ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE3WAjjxE4GCtyhoZUQxFDuvcOlU5b+SB6+Kd08FMtch vaultwarden-backup`
+输出示例: `ssh-ed25519 <你的公钥内容> vaultwarden-backup`
 
 将公钥添加到 GitHub 仓库 Settings -> Deploy keys -> Add deploy key（勾选 Allow write access）。
 
@@ -237,7 +237,7 @@ git init
 git config user.name "Vaultwarden Backup"
 git config user.email "backup@local"
 git branch -M main
-git remote add origin git@github.com:qyzzyqlqj/Vaultwarden_Backup.git
+git remote add origin git@github.com:<你的用户名>/<你的仓库名>.git
 ```
 
 ### 4.4 测试 SSH 连接
@@ -246,7 +246,7 @@ git remote add origin git@github.com:qyzzyqlqj/Vaultwarden_Backup.git
 ssh -T git@github.com
 ```
 
-预期输出: `Hi qyzzyqlqj/Vaultwarden_Backup! You've successfully authenticated...`
+预期输出: `Hi <你的用户名>/<仓库名>! You've successfully authenticated...`
 
 ### 4.5 编写备份脚本
 
@@ -307,17 +307,6 @@ chmod +x ~/backup.sh
 ~/backup.sh
 ```
 
-首次运行成功输出:
-
-```
-[main (root-commit) 8182cf1] Auto backup: 2026-08-02 17:13:17
- 2 files changed, 27 insertions(+)
- create mode 100644 db.sqlite3
- create mode 100644 rsa_key.pem
-To github.com:qyzzyqlqj/Vaultwarden_Backup.git
- * [new branch]      main -> main
-```
-
 ### 4.6 设置 crontab 定时任务
 
 ```bash
@@ -376,38 +365,46 @@ backup.sh
 如果小鸡故障，在新服务器上恢复:
 
 1. 在新服务器上用同样方法部署 Vaultwarden
+
 2. 克隆备份仓库:
-   ```bash
-   git clone git@github.com:qyzzyqlqj/Vaultwarden_Backup.git ~/vw-repo
-   ```
+
+    ```bash
+    git clone git@github.com:<你的用户名>/<你的仓库名>.git ~/vw-repo
+    ```
+
 3. 停止 Vaultwarden 服务
+
 4. 恢复数据:
-   ```bash
-   cp ~/vw-repo/db.sqlite3 ~/vaultwarden/data/
-   [ -f ~/vw-repo/rsa_key.pem ] && cp ~/vw-repo/rsa_key.pem ~/vaultwarden/data/
-   [ -f ~/vw-repo/rsa_key.pub.pem ] && cp ~/vw-repo/rsa_key.pub.pem ~/vaultwarden/data/
-   [ -d ~/vw-repo/attachments ] && cp -r ~/vw-repo/attachments ~/vaultwarden/data/
-   ```
+
+    ```bash
+    cp ~/vw-repo/db.sqlite3 ~/vaultwarden/data/
+    [ -f ~/vw-repo/rsa_key.pem ] && cp ~/vw-repo/rsa_key.pem ~/vaultwarden/data/
+    [ -f ~/vw-repo/rsa_key.pub.pem ] && cp ~/vw-repo/rsa_key.pub.pem ~/vaultwarden/data/
+    [ -d ~/vw-repo/attachments ] && cp -r ~/vw-repo/attachments ~/vaultwarden/data/
+    ```
+
 5. 重新启动 Vaultwarden，用原主密码登录即可
 
 ---
 
 ## 附: 失败尝试记录
 
-| 尝试方案 | 失败原因 |
-|---------|---------|
-| 下载 GitHub Releases 二进制 | 官方已取消独立 Release 包，下载到的是 9 字节的 HTML |
-| 使用 `docker run` | Docker daemon 未运行（嵌套容器限制） |
-| 使用 `podman run` | `cannot clone: Permission denied`（嵌套容器限制） |
-| 从 Docker 镜像 `docker cp` 提取 | Docker daemon 未运行 |
-| 绑定 `ROCKET_ADDRESS="[::]"` | Rocket 框架解析 IPv6 语法失败（Exit 101） |
-| 使用 `iptables -F` 放行端口 | `Permission denied`（容器内无 `cap_net_admin`） |
-| `ufw allow 8080` | 系统未安装 ufw |
-| `cloudflared tunnel login` + 本地配置文件 | 改用网页控制台模式更简单，最终还是走了网页模式 |
+| 尝试方案                                  | 失败原因                                            |
+| ----------------------------------------- | --------------------------------------------------- |
+| 下载 GitHub Releases 二进制               | 官方已取消独立 Release 包，下载到的是 9 字节的 HTML |
+| 使用 `docker run`                         | Docker daemon 未运行（嵌套容器限制）                |
+| 使用 `podman run`                         | `cannot clone: Permission denied`（嵌套容器限制）   |
+| 从 Docker 镜像 `docker cp` 提取           | Docker daemon 未运行                                |
+| 绑定 `ROCKET_ADDRESS="[::]"`              | Rocket 框架解析 IPv6 语法失败（Exit 101）           |
+| 使用 `iptables -F` 放行端口               | `Permission denied`（容器内无 `cap_net_admin`）     |
+| `ufw allow 8080`                          | 系统未安装 ufw                                      |
+| `cloudflared tunnel login` + 本地配置文件 | 改用网页控制台模式更简单，最终还是走了网页模式      |
 
 ---
 
 ## 问题修复记录
+
+
 
 ### 备份脚本过于频繁（一晚上 Push 上百次）
 
